@@ -23,7 +23,7 @@ class Login extends Component {
   onLogin = (e) => {
     e.preventDefault()
     if (localStorage.getItem('token', 'true')) {
-      this.props.history.push('/home')
+      this.props.history.push('/profile')
     } else {
       this.setState({error: 'Wrong Username or Password'})
     }
