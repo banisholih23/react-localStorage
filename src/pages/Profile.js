@@ -53,12 +53,17 @@ class Home extends Component {
                         <tr>
                           <th>Username</th>
                           <th>Password</th>
+                          <th>Action</th>
                         </tr>
                       </thead>
                       <tbody align="center">
                         <tr>
                           <td>{email}</td>
                           <td>{password}</td>
+                          <td align="center">
+                            <Button color="success">Edit</Button>
+                            <Button color="danger" className="ml-2">Delete</Button>
+                          </td>
                         </tr>
                       </tbody>
                     </Table>
