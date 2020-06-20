@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import { Button } from 'reactstrap'
+import { Container, Row, Button, Table, Card, CardBody, CardHeader } from 'reactstrap'
 
 class Home extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
 
     this.checkToken = () => {
@@ -22,27 +22,52 @@ class Home extends Component {
     this.logout = this.logout.bind(this)
   }
 
-  logout(){
+  logout() {
     localStorage.removeItem('token')
     this.props.history.push('/login')
   }
 
-  
-  componentDidMount(){
+  componentDidMount() {
     this.checkToken()
-    if(localStorage.getItem('token')){
-      this.setState(JSON.parse(localStorage.getItem('token')))
-    }
   }
 
-  render(){
-    let {email} = this.state
-    return(
+  render() {
+    const email = JSON.parse(localStorage.getItem('token'))
+    const password = JSON.parse(localStorage.getItem('token'))
+    return (
       <>
-        <div className="d-flex flex-column justify-content-center align-items-center p-5">
-          <h1>Hello {email}!</h1>
-          <Button onClick={this.logout}>Logout</Button>
-        </div>
+        <Row className="no-gutters w-100 h-100">
+          <div className="d-flex flex-row w-100">
+            <div className="w-100 d-flex flex-column">
+              <div className="top-navbar sticky-top">
+              </div>
+              <Container fluid className="mt-4">
+                <Card>
+                  <div className="d-flex flex-row">
+                    <CardHeader>Users Profile</CardHeader>
+                    <Button color="danger" className="justify-content-end" onClick={this.logout}>logout</Button>
+                  </div>
+                  <CardBody>
+                    <Table striped bordered hover>
+                      <thead align="center">
+                        <tr>
+                          <th>Username</th>
+                          <th>Password</th>
+                        </tr>
+                      </thead>
+                      <tbody align="center">
+                        <tr>
+                          <td>{email}</td>
+                          <td>{password}</td>
+                        </tr>
+                      </tbody>
+                    </Table>
+                  </CardBody>
+                </Card>
+              </Container>
+            </div>
+          </div>
+        </Row>
       </>
     )
   }

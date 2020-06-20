@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap'
+import alert from 'sweetalert2'
 
 class Register extends Component {
 
@@ -7,10 +8,8 @@ class Register extends Component {
     super(props)
     this.state = {
       email: '',
-      password: '',
-      error: '',
+      password: ''
     }
-    this.handleRegist = this.handleRegist.bind(this)
   }
 
   handleChange = event => {
@@ -19,8 +18,32 @@ class Register extends Component {
 
   handleRegist = async () => {
     const {email, password} = this.state
-    localStorage.setItem('token', JSON.stringify({email, password}))
-    this.props.history.push('/login', this.state);
+    if (!((this.state.email === '') || (this.state.password === ''))) {
+      if ((this.state.password.match(/^(?=.*[0-9a-zA-Z][!@#$%^&*])[0-9a-zA-Z!@#$%^&*]/)) && this.state.password.length > 8 ) {
+        if (JSON.parse(localStorage.getItem(this.state.email))) {
+          alert.fire({
+            icon: 'error',
+            title: 'Sorry',
+            text: 'Email has been taken bro!'
+          })
+        } else {
+          localStorage.setItem(this.state.email, JSON.stringify({ email, password }))
+          this.props.history.push('/login')
+        }
+      } else {
+        alert.fire({
+          icon: 'error',
+          title: 'Sorry',
+          text: 'Password must length > 8 and contain number, char, symbol'
+        })
+      }
+    } else {
+      alert.fire({
+        icon: 'error',
+        title: 'Sorry',
+        text: 'All form must be filled'
+      })
+    }
   }
 
   render() {

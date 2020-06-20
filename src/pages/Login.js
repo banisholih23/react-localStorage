@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Button, Form, FormGroup, Label, Input, } from 'reactstrap'
 import {Link} from 'react-router-dom'
 
+import alert from 'sweetalert2'
+
 class Login extends Component {
 
   constructor(props) {
@@ -10,10 +12,7 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      error: '',
     }
-    this.handleChange = this.handleChange.bind(this)
-    this.onLogin = this.onLogin.bind(this)
   }
 
   handleChange = event => {
@@ -22,20 +21,42 @@ class Login extends Component {
 
   onLogin = (e) => {
     e.preventDefault()
-    if (localStorage.getItem('token', 'true')) {
-      this.props.history.push('/profile')
+    const { email , password } = this.state
+    if (email === '' && password === '') {
+      alert.fire({
+        icon: 'error',
+        title: 'Sorry',
+        text: 'Please fill the form Dude!'
+      })
     } else {
-      this.setState({error: 'Wrong Username or Password'})
+      if (JSON.parse(localStorage.getItem(email))) {
+        const user = JSON.parse(localStorage.getItem(email, password))
+        if (email === user.email && password === user.password) {
+          const {email, password} = this.state
+          localStorage.setItem('token', JSON.stringify(email, password))
+          this.props.history.push('/profile')
+        } else {
+          alert.fire({
+          icon: 'error',
+          title: 'sorry',
+          text: 'Wrong email and password'
+          })
+        }
+      } else {
+        alert.fire({
+          icon: 'error',
+          title: 'Sorry',
+          text: 'User cannot found please register'
+        })
+      }
     }
   }
 
   componentDidMount(){
-    if(this.props.location.state){
-      const {error} = this.props.location.state
-      this.setState({error})
+    if(localStorage.getItem('token')){
+      this.props.history.push('/login')
     }
   }
-
 
   render() {
     return (
