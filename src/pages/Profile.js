@@ -45,7 +45,9 @@ class Home extends Component {
                 <Card>
                   <div className="d-flex flex-row">
                     <CardHeader>Users Profile</CardHeader>
-                    <Button color="danger" className="justify-content-end" onClick={this.logout}>logout</Button>
+                  </div>
+                  <div className="d-flex justify-content-end mr-4">
+                    <Button color="danger" onClick={this.logout}>logout</Button>
                   </div>
                   <CardBody>
                     <Table striped bordered hover>
@@ -59,7 +61,7 @@ class Home extends Component {
                       <tbody align="center">
                         <tr>
                           <td>{email}</td>
-                          <td>{password}</td>
+                          <td>*********</td>
                           <td align="center">
                             <Button color="success">Edit</Button>
                             <Button color="danger" className="ml-2">Delete</Button>
