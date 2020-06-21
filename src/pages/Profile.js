@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import { Container, Row, Button, Table, Card, CardBody, CardHeader } from 'reactstrap'
+import { Container, Row, Button, 
+  Table, Card, CardBody, 
+  CardHeader, Modal, ModalBody, ModalHeader, Form, Input, ModalFooter } from 'reactstrap'
 
-class Home extends Component {
+class Profile extends Component {
   constructor(props) {
     super(props)
 
@@ -14,17 +16,37 @@ class Home extends Component {
         props.history.push('/profile')
       }
     }
-
+    
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      showModal: false
     }
     this.logout = this.logout.bind(this)
   }
 
   logout() {
     localStorage.removeItem('token')
-    this.props.history.push('/login')
+    this.props.history.push('/home')
+  }
+
+   handleChange = event => {
+    this.setState({ [event.target.name]: event.target.value })
+  }
+
+  editUser = (e) => {
+    e.preventDefault()
+    const data = {
+      email: this.state.email,
+      password: this.state.password
+    }
+    console.log(data)
+    localStorage.setItem(this.state.email, JSON.stringify(data))
+    this.setState({showModal: !this.state.showModal})
+  }
+
+  toggleModal = (e) => {
+    this.setState({showModal: !this.state.showModal})
   }
 
   componentDidMount() {
@@ -33,7 +55,6 @@ class Home extends Component {
 
   render() {
     const email = JSON.parse(localStorage.getItem('token'))
-    const password = JSON.parse(localStorage.getItem('token'))
     return (
       <>
         <Row className="no-gutters w-100 h-100">
@@ -63,8 +84,7 @@ class Home extends Component {
                           <td>{email}</td>
                           <td>*********</td>
                           <td align="center">
-                            <Button color="success">Edit</Button>
-                            <Button color="danger" className="ml-2">Delete</Button>
+                            <Button color="warning text-white" onClick={this.toggleModal}>Edit</Button>
                           </td>
                         </tr>
                       </tbody>
@@ -75,9 +95,24 @@ class Home extends Component {
             </div>
           </div>
         </Row>
+        <Modal isOpen={this.state.showModal}>
+            <ModalHeader>Edit User</ModalHeader>
+            <ModalBody>
+              <Form>
+                <h6>Email</h6>
+                <Input className="mt-2" name="email" value={this.state.email} onChange={this.handleChange}/>
+                <h6 className="mt-2">Password</h6>
+                <Input className='mt-2' name='password' type="password" value={this.state.password} onChange={this.handleChange}/>
+              </Form>
+            </ModalBody>
+            <ModalFooter>
+              <Button color="success" onClick={this.editUser}>Submit</Button>
+              <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
+            </ModalFooter>
+          </Modal>
       </>
     )
   }
 }
 
-export default Home
+export default Profile

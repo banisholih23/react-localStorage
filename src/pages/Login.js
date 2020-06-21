@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { Button, Form, FormGroup, Label, Input, } from 'reactstrap'
-import {Link} from 'react-router-dom'
+import { Jumbotron, Button, Form, FormGroup, Label, Input, } from 'reactstrap'
+import { Link } from 'react-router-dom'
 
 import alert from 'sweetalert2'
 
@@ -21,7 +21,8 @@ class Login extends Component {
 
   onLogin = (e) => {
     e.preventDefault()
-    const { email , password } = this.state
+    const email = this.state.email
+    const password = this.state.password
     if (email === '' && password === '') {
       alert.fire({
         icon: 'error',
@@ -32,14 +33,14 @@ class Login extends Component {
       if (JSON.parse(localStorage.getItem(email))) {
         const user = JSON.parse(localStorage.getItem(email, password))
         if (email === user.email && password === user.password) {
-          const {email, password} = this.state
+          const { email, password } = this.state
           localStorage.setItem('token', JSON.stringify(email, password))
           this.props.history.push('/profile')
         } else {
           alert.fire({
-          icon: 'error',
-          title: 'sorry',
-          text: 'Wrong email and password'
+            icon: 'error',
+            title: 'sorry',
+            text: 'Wrong email and password'
           })
         }
       } else {
@@ -52,8 +53,8 @@ class Login extends Component {
     }
   }
 
-  componentDidMount(){
-    if(localStorage.getItem('token')){
+  componentDidMount() {
+    if (localStorage.getItem('token')) {
       this.props.history.push('/login')
     }
   }
@@ -61,23 +62,25 @@ class Login extends Component {
   render() {
     return (
       <>
-        <div className="d-flex justify-content-center align-items-center p-5">
-          <Form onSubmit={this.onLogin}>
-            <FormGroup>
-              <Label for="exampleEmail">Email</Label>
-              <Input type="email" name="email" id="exampleEmail" placeholder="Your Mail" onChange={this.handleChange} ></Input>
-            </FormGroup>
-            <FormGroup>
-              <Label for="examplePassword">Password</Label>
-              <Input type="password" name="password" id="examplePassword" placeholder="Your Password" onChange={this.handleChange} ></Input>
-            </FormGroup>
-            <div>
-              <Button onSubmit={this.onLogin} color="success">Login</Button>
-              <Link to="/register">
-                <Button color="info" className="text-white ml-2" >Register</Button>
-              </Link>
-            </div>
-          </Form>
+        <div className="d-flex justify-content-center align-items-center content">
+          <Jumbotron>
+            <Form onSubmit={this.onLogin}>
+              <FormGroup>
+                <Label for="exampleEmail">Email</Label>
+                <Input type="email" name="email" id="exampleEmail" placeholder="Your Mail" onChange={this.handleChange} ></Input>
+              </FormGroup>
+              <FormGroup>
+                <Label for="examplePassword">Password</Label>
+                <Input type="password" name="password" id="examplePassword" placeholder="Your Password" onChange={this.handleChange} ></Input>
+              </FormGroup>
+              <div>
+                <Button onSubmit={this.onLogin} color="success">Login</Button>
+                <Link to="/register">
+                  <Button color="info" className="text-white ml-2" >Register</Button>
+                </Link>
+              </div>
+            </Form>
+          </Jumbotron>
         </div>
       </>
     )
