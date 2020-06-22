@@ -18,16 +18,16 @@ class Register extends Component {
 
   handleRegist = async () => {
     const { email, password } = this.state
-    if (!((this.state.email === '') || (this.state.password === ''))) {
-      if ((this.state.password.match(/^(?=.*[0-9a-zA-Z][!@#$%^&*])[0-9a-zA-Z!@#$%^&*]/)) && this.state.password.length > 8) {
-        if (JSON.parse(localStorage.getItem(this.state.email))) {
+    if (!((email === '') || (password === ''))) {
+      if ((password.match(/^(?=.*[0-9a-zA-Z][!@#$%^&*])[0-9a-zA-Z!@#$%^&*]/)) && password.length > 8) {
+        if (JSON.parse(localStorage.getItem(email))) {
           alert.fire({
             icon: 'error',
             title: 'Sorry',
             text: 'Email has been taken bro!'
           })
         } else {
-          localStorage.setItem(this.state.email, JSON.stringify({ email, password }))
+          localStorage.setItem(email, JSON.stringify({ email, password }))
           this.props.history.push('/login')
         }
       } else {
